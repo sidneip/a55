@@ -1,12 +1,15 @@
 require 'a55/client/instruction'
+require 'a55/client/bank_slip'
 require 'a55/errors'
 require 'httparty'
 module A55
   class Client
     include HTTParty
     base_uri "https://banking-api-hmg.a55.tech"
-    def initialize token = nil
-      @token = token || A55.token || ENV['A55_TOKEN']
+    attr_reader :account_id
+    def initialize(account_id = nil, options = {})
+      @token = options[:token] || A55.token || ENV['A55_TOKEN']
+      @account_id = account_id || A55.account_id
       raise A55::MissingTokenError unless @token
       self.class.default_options.merge!(headers: { 'Authorization' => "Token #{@token}", 'Content-Type' => 'application/json'}, verify: A55.production? )
     end
@@ -18,6 +21,10 @@ module A55
 
     def instructions
       @instruction_client ||= Instruction.new(self)
+    end
+
+    def bank_slip
+      @bank_slip_client ||= BankSlip.new(self)
     end
     
     def get(path, options  = {})

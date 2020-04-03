@@ -4,25 +4,26 @@ module A55
       attr_accessor :client
       def initialize(client)
         self.client = client
+        raise A55::MissingAccountIdError unless client.account_id
       end
 
-      def find(account_id, id) 
-        response = client.get("/instruction/#{account_id}/#{id}")
+      def find(id) 
+        response = client.get("/instruction/#{client.account_id}/#{id}")
         response.parsed_response
       end
 
-      def where(account_id, options = {})
-        response = client.post("/instruction/#{account_id}", options)
+      def where(options = {})
+        response = client.post("/instruction/#{client.account_id}", options)
+        response
+      end
+
+      def create(options = {})
+        response = client.post("/instruction/#{client.account_id}/create", options)
         response.parsed_response
       end
 
-      def create(account_id, options = {})
-        response = client.post("/instruction/#{account_id}", options)
-        response.parsed_response
-      end
-
-      def update(id, options = {})
-        response = client.post("/instruction/#{account_id}", options)
+      def update(options = {})
+        response = client.post("/instruction/#{client.account_id}/create", options)
         response.parsed_response
       end
     end
