@@ -22,7 +22,6 @@ module A55
         response.parsed_response
       end
 
-
       def download(bank_slip_id)
         response = client.get("/boleto/#{client.account_id}/#{bank_slip_id}/pdf")
         response.parsed_response
