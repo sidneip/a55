@@ -1,3 +1,4 @@
+require 'a55'
 require 'a55/client/instruction'
 require 'a55/client/bank_slip'
 require 'a55/errors'
@@ -8,7 +9,7 @@ module A55
     base_uri "https://banking-api-hmg.a55.tech"
     attr_reader :account_id
     def initialize(account_id = nil, options = {})
-      @token = options[:token] || A55.token || ENV['A55_TOKEN']
+      @token = options[:token] || A55.authenticate
       @account_id = account_id || A55.account_id
       raise A55::MissingTokenError unless @token
       self.class.default_options.merge!(headers: { 'Authorization' => "Token #{@token}", 'Content-Type' => 'application/json'}, verify: A55.production? )
