@@ -10,7 +10,7 @@ module A55
     attr_reader :account_id
     def initialize(account_id = nil, options = {})
       @token = options[:token] || A55.authenticate
-      @account_id = account_id || A55.account_id
+      @account_id = account_id || A55.account_id || ENV['A55_ACCOUNT_ID']
       raise A55::MissingTokenError unless @token
       self.class.default_options.merge!(headers: { 'Authorization' => "Token #{@token}", 'Content-Type' => 'application/json'}, verify: A55.production? )
     end
