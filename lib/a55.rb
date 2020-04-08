@@ -16,7 +16,7 @@ module A55
       api_token = token || api_token || ENV['A55_API_TOKEN']
       raise MissingApiTokenError unless api_token
       response = HTTParty.post(
-        'https://auth-api-hmg.a55.tech/api/auth/signin',
+        "#{A55.api_url}/api/auth/signin",
         body: {},
         headers:  {
           "Content-Type" => 'application/json',
