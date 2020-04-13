@@ -3,6 +3,7 @@ require "a55/configuration"
 require "a55/client"
 require 'active_support/core_ext/module/delegation'
 require 'httparty'
+require 'byebug'
 
 module A55
   class << self
@@ -13,14 +14,14 @@ module A55
     end
 
     def authenticate(token = nil)
-      api_token = token || api_token || ENV['A55_API_TOKEN']
-      raise MissingApiTokenError unless api_token
+      app_token = token || api_token || ENV['A55_API_TOKEN']
+      raise MissingApiTokenError unless app_token
       response = HTTParty.post(
-        "#{A55.api_url}/api/auth/signin",
+        "#{configuration.auth_api}",
         body: {},
         headers:  {
           "Content-Type" => 'application/json',
-          "Authorization" => "ApiKey #{api_token}"
+          "Authorization" => "ApiKey #{app_token}"
         }
       ).parsed_response
       response.fetch('user', {}).fetch('token', nil)

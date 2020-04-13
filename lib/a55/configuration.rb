@@ -1,6 +1,7 @@
 module A55
   class Configuration
-    attr_accessor :token, :env, :account_id
+    attr_accessor :api_token, :env, :account_id
+    attr_reader :api_url
     def initialize
       @token = nil
       @env = nil
@@ -16,6 +17,14 @@ module A55
     
     def production?
       ENV['RAILS_ENV'] == 'production' || self.env == 'production'
+    end
+
+    def auth_api
+      if production?
+        'https://auth-api.a55.tech/api/auth/signin'
+      else
+        'https://auth-api-hmg.a55.tech/api/auth/signin'
+      end
     end
     
   end
