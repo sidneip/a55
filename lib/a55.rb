@@ -3,7 +3,6 @@ require "a55/configuration"
 require "a55/client"
 require 'active_support/core_ext/module/delegation'
 require 'httparty'
-require 'byebug'
 
 module A55
   class << self
