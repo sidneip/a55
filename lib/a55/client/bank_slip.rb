@@ -27,6 +27,11 @@ module A55
         response.parsed_response
       end
 
+      def change_due_date(bank_slip_id, new_date)
+        response = client.post("/boleto/#{client.account_id}/#{bank_slip_id}/alterDueDate", {due_date: new_date})
+        response.parsed_response
+      end
+
     end
   end
 
